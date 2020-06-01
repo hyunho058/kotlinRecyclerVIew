@@ -1,0 +1,4 @@
+package fragmentView
+
+class BookInfoFragment {
+}
