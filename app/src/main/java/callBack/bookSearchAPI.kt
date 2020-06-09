@@ -17,8 +17,8 @@ class bookSearchAPI constructor(keyword : String) : AsyncTask<String, Void, Arra
     var documentList : ArrayList<Document> = ArrayList()
 
 
-    override fun doInBackground(vararg params: String?): ArrayList<Document> {
-        TODO("Not yet implemented")
+    override fun doInBackground(vararg params: String?): ArrayList<Document>? {
+
         Log.v(mTAG,"--doInBackground--")
         var url : String = "https://dapi.kakao.com/v3/search/book?target=title"
         url += "&query="+keyword
@@ -32,9 +32,9 @@ class bookSearchAPI constructor(keyword : String) : AsyncTask<String, Void, Arra
             val stringBuffer : StringBuffer = StringBuffer()
             var line : String = ""
 
-            while((line = bufferedReader.readLine()) != null){
-                stringBuffer.append(line)
-            }
+//            while((line = bufferedReader.readLine()) != null){
+//                stringBuffer.append(line)
+//            }
             bufferedReader.close()
 
             Log.v(mTAG,"stringBuffer=="+stringBuffer)
@@ -42,6 +42,6 @@ class bookSearchAPI constructor(keyword : String) : AsyncTask<String, Void, Arra
         }catch (e: Exception){
 
         }
-
+        return documentList;
     }
 }
