@@ -17,6 +17,9 @@ class BookInfoFragment : Fragment() {
     lateinit var tvPrice : TextView
     lateinit var  tvISBN : TextView
     lateinit var ivBookImage : ImageView
+//    var bundle : Bundle()
+
+    var getUrl : String=""
 
 //    inflater.inflate(R.layout.bookinfo_fragment, container, false);
 
@@ -26,7 +29,6 @@ class BookInfoFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         Log.v(TAG,"onCreateView");
-
         return inflater.inflate(R.layout.fragment_book_info, container, false)
     }
 
@@ -37,5 +39,7 @@ class BookInfoFragment : Fragment() {
         tvPrice = view.findViewById(R.id.tvPrice)
         tvISBN = view.findViewById(R.id.tvISBN)
         ivBookImage = view.findViewById(R.id.ivBookImage)
+
+//        getUrl = bundle.getString("Url").toString()
     }
 }
