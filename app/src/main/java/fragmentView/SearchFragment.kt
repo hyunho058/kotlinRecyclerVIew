@@ -1,4 +1,5 @@
 package fragmentView
 
 class SearchFragment {
+    
 }
