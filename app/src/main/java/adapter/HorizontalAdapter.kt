@@ -48,8 +48,8 @@ class HorizontalAdapter() : RecyclerView.Adapter<HorizontalAdapter.CardItem>(){
         var getImageUrl:String = documentList.get(position).thumbnail
         Log.v(TAG,"onBindViewHolder()_Url=="+getImageUrl)
         Glide.with(context).load(getImageUrl).into(holder.iv_poster)
-        var drawable : GradientDrawable =(GradientDrawable) context.get
-        holder.iv_poster.set
+//        var drawable : GradientDrawable =(GradientDrawable) context.get
+//        holder.iv_poster.set
     }
 
     override fun getItemViewType(position: Int): Int {
