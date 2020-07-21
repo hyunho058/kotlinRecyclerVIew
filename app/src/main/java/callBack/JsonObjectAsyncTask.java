@@ -46,6 +46,7 @@ public class JsonObjectAsyncTask extends AsyncTask<String, Void, ArrayList<Docum
             /*** REQUEST */
             //URL 객체 생성
             URL objUrl = new URL(url);
+            Log.v(TAG,"URL=="+url);
             HttpURLConnection con = (HttpURLConnection) objUrl.openConnection();
             // 요청방식 설정(API 문서 참조)
             con.setRequestMethod("GET");

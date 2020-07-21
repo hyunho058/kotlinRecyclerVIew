@@ -9,7 +9,7 @@ import java.lang.Exception
 import java.net.HttpURLConnection
 import java.net.URL
 
-class bookSearchAPI constructor(keyword : String) : AsyncTask<String, Void, ArrayList<Document>>() {
+class BookSearchAPI constructor(keyword : String) : AsyncTask<String, Void, ArrayList<Document>>() {
 
     val mTAG : String = "bookSearchAPI"
     val token : String = "KakaoAK a85301089026f3d76b61ac72f59b1d91"
