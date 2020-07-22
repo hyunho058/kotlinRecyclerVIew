@@ -5,6 +5,12 @@
     android:layout_height="match_parent"
     android:clickable="true"
     android:background="@color/colorActivityBackground">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:text="Fragment"
+        android:textSize="50sp"
+        android:textColor="@color/cardview_shadow_start_color"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewVertical"
         android:layout_width="match_parent"
