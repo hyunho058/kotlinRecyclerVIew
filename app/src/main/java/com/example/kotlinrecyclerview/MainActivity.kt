@@ -92,6 +92,7 @@ class MainActivity : AppCompatActivity() {
     fun asyncTaskData(keyword: String){
         Log.v(TAG,"asyncTaskData()_keyword=="+keyword)
         documentList = JsonObjectAsyncTask(keyword).execute().get()
+        Log.v(TAG, "asyncTaskData()_documentList==${documentList.get(0).title}")
     }
 
     fun createTabView(tabName: String, iconImage: Int) : View{
@@ -102,5 +103,4 @@ class MainActivity : AppCompatActivity() {
         ivtab.setImageResource(iconImage)
         return tabView
     }
-
 }

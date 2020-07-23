@@ -29,7 +29,6 @@ class HorizontalAdapter() : RecyclerView.Adapter<HorizontalAdapter.CardItem>(){
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardItem {
-        TODO("Not yet implemented")
         Log.v(TAG,"onCreateViewHolder()")
         var view : View = LayoutInflater.from(parent.context).inflate(R.layout.recycler_item_card,null)
         return CardItem(view)
@@ -37,12 +36,10 @@ class HorizontalAdapter() : RecyclerView.Adapter<HorizontalAdapter.CardItem>(){
 
     override fun getItemCount(): Int = documentList.size
 //    {
-//        TODO("Not yet implemented")
 //        Log.v(TAG,"getItemCount()")
 //    }
 
     override fun onBindViewHolder(holder: CardItem, position: Int) {
-        TODO("Not yet implemented")
         Log.v(TAG,"onBindViewHolder()")
 
         var getImageUrl:String = documentList.get(position).thumbnail
