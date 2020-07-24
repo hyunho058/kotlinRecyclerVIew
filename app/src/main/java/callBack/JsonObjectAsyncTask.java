@@ -20,8 +20,6 @@ public class JsonObjectAsyncTask extends AsyncTask<String, Void, ArrayList<Docum
     String TAG = "JsonObjectTest";
     String keyword = "";
     ArrayList<Document> documentList;
-    ArrayList<Document> documentListR;
-    List<Document> doo = new ArrayList<>();
     ArrayList docList;
 
     private String token = "KakaoAK a85301089026f3d76b61ac72f59b1d91";
@@ -78,8 +76,9 @@ public class JsonObjectAsyncTask extends AsyncTask<String, Void, ArrayList<Docum
                 Log.v(TAG, "DEBUG:document[" + i + "]=" + document);
             }
             Log.v(TAG, "DEBUG:jsonData==" + jsonData);
-            Log.v(TAG,"docList==="+documentList);
-
+            Log.v(TAG,"documentList.size()==="+documentList.size());
+            Log.v(TAG,"docList==="+documentList.get(0).toString());
+            Log.v(TAG,"docList==="+documentList.get(0).getTitle());
         } catch (Exception e) {
             Log.v(TAG, "run()_Exception==" + e.toString());
         }

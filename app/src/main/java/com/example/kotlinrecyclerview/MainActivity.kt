@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity() {
     fun asyncTaskData(keyword: String){
         Log.v(TAG,"asyncTaskData()_keyword=="+keyword)
         documentList = JsonObjectAsyncTask(keyword).execute().get()
-        Log.v(TAG, "asyncTaskData()_documentList==${documentList.get(0).title}")
+        Log.v(TAG, "asyncTaskData()_documentList==${documentList.get(0).title.toString()}")
     }
 
     fun createTabView(tabName: String, iconImage: Int) : View{
