@@ -3,6 +3,7 @@ package callBack
 import android.os.AsyncTask
 import android.util.Log
 import model.Document
+import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.lang.Exception
@@ -24,21 +25,32 @@ class BookSearchAPI constructor(keyword : String) : AsyncTask<String, Void, Arra
         url += "&query="+keyword
 
         try {
+
+            /** REQUEST **/
             val objUrl : URL = URL(url)
             val con : HttpURLConnection = objUrl.openConnection() as HttpURLConnection
             con.setRequestMethod("GET")
             con.setRequestProperty("Authorization",token)
-            val bufferedReader : BufferedReader = BufferedReader(InputStreamReader(con.inputStream))
-            val stringBuffer : StringBuffer = StringBuffer()
-            var line : String = ""
 
-//            while((line = bufferedReader.readLine()) != null){
-//                stringBuffer.append(line)
-//            }
+            /** RESPONSE **/
+            val bufferedReader = BufferedReader(InputStreamReader(con.inputStream))
+            val stringBuffer = StringBuffer()
+            var line = ""
+
+            // kotlin while 사용 - https://stackoverrun.com/ko/q/11286921
+            while(line != null){
+                line = bufferedReader.readLine()
+                stringBuffer.append(line)
+            }
             bufferedReader.close()
+            Log.v(mTAG, "stringBuffer==$stringBuffer")
+//            var data = stringBuffer.toString()
+//            var jsonData = JSONObject(data)
+            var documents = JSONObject(stringBuffer.toString()).getJSONArray("documents")
+            documentList = ArrayList<Document>()
+            for (i in documents.indices){
 
-            Log.v(mTAG,"stringBuffer=="+stringBuffer)
-
+            }
         }catch (e: Exception){
 
         }
