@@ -35,22 +35,47 @@ class MainActivity : AppCompatActivity() {
 
         asyncTaskData("JAVA")
         
-        SearchRetrofit.getService().getData(keyword = "JAVA")
-            .enqueue(object  : Callback<List<Document>>{
+//        SearchRetrofit.getService().getData(keyword = "JAVA")
+//            .enqueue(object : Callback<List<Document>>{
+//                override fun onFailure(call: Call<List<Document>>, t: Throwable) {
+//                    Log.v(TAG,"SearchRetrofit_onFailure()")
+//                }
+//                override fun onResponse(
+//                    call: Call<List<Document>>, response: Response<List<Document>>) {
+//                    Log.v(TAG,"SearchRetrofit_onResponse()")
+//                    Log.v(TAG, "call==$call")
+//                    Log.v(TAG, "response==$response")
+//                    Log.v(TAG, "response==${response.body().toString()}")
+//                    if(response.isSuccessful){
+//                        Log.v(TAG,"")
+//                    }
+//                }
+//            })
+
+        val thread = Thread(Runnable(){
+            Log.v(TAG,"THREAD START")
+            val retrofit: KakaoRetrofit = Retrofit.Builder()
+                .baseUrl("https://dapi.kakao.com")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+                .create(KakaoRetrofit::class.java)
+
+            val call: Call<List<Document>> = retrofit.getData("java")
+            call.enqueue(object : Callback<List<Document>>{
                 override fun onFailure(call: Call<List<Document>>, t: Throwable) {
                     Log.v(TAG,"SearchRetrofit_onFailure()")
                 }
-                override fun onResponse(
-                    call: Call<List<Document>>, response: Response<List<Document>>) {
+                override fun onResponse(call: Call<List<Document>>, response: Response<List<Document>>) {
                     Log.v(TAG,"SearchRetrofit_onResponse()")
                     Log.v(TAG, "call==$call")
                     Log.v(TAG, "response==$response")
                     Log.v(TAG, "response==${response.body().toString()}")
-                    if(response.isSuccessful){
-                        Log.v(TAG,"")
-                    }
                 }
             })
+        })
+
+        thread.start()
+
 
         tabLayout = findViewById(R.id.tabLayout)
         tabLayout.addTab(tabLayout.newTab().setCustomView(createTabView("HOME",R.drawable.ic_launcher_foreground)))
@@ -92,7 +117,7 @@ class MainActivity : AppCompatActivity() {
     fun asyncTaskData(keyword: String){
         Log.v(TAG,"asyncTaskData()_keyword=="+keyword)
         documentList = JsonObjectAsyncTask(keyword).execute().get()
-        Log.v(TAG, "asyncTaskData()_documentList==${documentList.get(0).title.toString()}")
+        Log.v(TAG, "asyncTaskData()_documentList_title==${documentList.get(0).title.toString()}")
     }
 
     fun createTabView(tabName: String, iconImage: Int) : View{

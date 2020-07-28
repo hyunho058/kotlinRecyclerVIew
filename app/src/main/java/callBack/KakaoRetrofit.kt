@@ -8,7 +8,8 @@ import retrofit2.http.Headers
 import retrofit2.http.Query
 
 interface KakaoRetrofit {
-        @Headers("Authorization: KakaoAK {a85301089026f3d76b61ac72f59b1d91}")
+//        @Headers("Authorization: KakaoAK a85301089026f3d76b61ac72f59b1d91")
+        @Headers("Authorization: KakaoAK a85301089026f3d76b61ac72f59b1d91")
 //        @GET("v3/search/book")
         @GET("v3/search/book?target=title")
         fun getData(

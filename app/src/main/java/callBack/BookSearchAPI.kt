@@ -48,9 +48,9 @@ class BookSearchAPI constructor(keyword : String) : AsyncTask<String, Void, Arra
 //            var jsonData = JSONObject(data)
             var documents = JSONObject(stringBuffer.toString()).getJSONArray("documents")
             documentList = ArrayList<Document>()
-            for (i in documents.indices){
-
-            }
+//            for (i in documents.indices){
+//
+//            }
         }catch (e: Exception){
 
         }
