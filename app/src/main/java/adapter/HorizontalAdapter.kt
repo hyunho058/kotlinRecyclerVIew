@@ -34,19 +34,22 @@ class HorizontalAdapter() : RecyclerView.Adapter<HorizontalAdapter.CardItem>(){
         return CardItem(view)
     }
 
-    override fun getItemCount(): Int = documentList.size
-//    {
-//        Log.v(TAG,"getItemCount()")
-//    }
-
     override fun onBindViewHolder(holder: CardItem, position: Int) {
         Log.v(TAG,"onBindViewHolder()")
+
+        holder.tv_title.setText(documentList.get(position).title)
+        holder.tv_title.isSelected
 
         var getImageUrl:String = documentList.get(position).thumbnail
         Log.v(TAG,"onBindViewHolder()_Url=="+getImageUrl)
         Glide.with(context).load(getImageUrl).into(holder.iv_poster)
-//        var drawable : GradientDrawable =(GradientDrawable) context.get
-//        holder.iv_poster.set
+//        var drawable : GradientDrawable = context.getDrawable(R.drawable.frame) as GradientDrawable
+//        holder.iv_poster.setBackgroundResource(drawable)
+    }
+
+    override fun getItemCount(): Int{
+        Log.v(TAG,"getItemCount()== ${documentList.size}")
+        return documentList.size
     }
 
     override fun getItemViewType(position: Int): Int {

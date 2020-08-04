@@ -1,82 +1,74 @@
 package com.example.kotlinrecyclerview
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.PointerIcon
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
+import callBack.APIClient
 import callBack.JsonObjectAsyncTask
 import callBack.KakaoRetrofit
-import callBack.SearchRetrofit
 import com.google.android.material.tabs.TabLayout
 import fragmentView.BookInfoFragment
 import fragmentView.HomeFragment
-import io.reactivex.Single
-import kotlinx.android.synthetic.main.custom_tab.*
+import fragmentView.SearchFragment
+import model.AdapterVO
 import model.Document
+import model.DocumentList
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
 
     var TAG:String = "MainActivity"
     lateinit var tabLayout:TabLayout
     lateinit var documentList : ArrayList<Document>
+    lateinit var kakaoRetrofit : KakaoRetrofit
+    lateinit var fragmentManager: FragmentManager
+    lateinit var fragmentTransaction: FragmentTransaction
+    lateinit var serachFragment: SearchFragment
+    lateinit var bookInfoFragment: BookInfoFragment
+    lateinit var homeFragment: HomeFragment
+
+    var adapterVO = ArrayList<AdapterVO>()
+    var documents = ArrayList<Document>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         asyncTaskData("JAVA")
-        
-//        SearchRetrofit.getService().getData(keyword = "JAVA")
-//            .enqueue(object : Callback<List<Document>>{
-//                override fun onFailure(call: Call<List<Document>>, t: Throwable) {
-//                    Log.v(TAG,"SearchRetrofit_onFailure()")
-//                }
-//                override fun onResponse(
-//                    call: Call<List<Document>>, response: Response<List<Document>>) {
-//                    Log.v(TAG,"SearchRetrofit_onResponse()")
-//                    Log.v(TAG, "call==$call")
-//                    Log.v(TAG, "response==$response")
-//                    Log.v(TAG, "response==${response.body().toString()}")
-//                    if(response.isSuccessful){
-//                        Log.v(TAG,"")
-//                    }
-//                }
-//            })
 
-        val thread = Thread(Runnable(){
-            Log.v(TAG,"THREAD START")
-            val retrofit: KakaoRetrofit = Retrofit.Builder()
-                .baseUrl("https://dapi.kakao.com")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(KakaoRetrofit::class.java)
+        /**
+         *  RETROFIT2 를 이요한 REST API 호출
+         */
+        val kakaoAK = "KakaoAK a85301089026f3d76b61ac72f59b1d91"
+        val keyword = "JAVA"
 
-            val call: Call<List<Document>> = retrofit.getData("java")
-            call.enqueue(object : Callback<List<Document>>{
-                override fun onFailure(call: Call<List<Document>>, t: Throwable) {
-                    Log.v(TAG,"SearchRetrofit_onFailure()")
-                }
-                override fun onResponse(call: Call<List<Document>>, response: Response<List<Document>>) {
-                    Log.v(TAG,"SearchRetrofit_onResponse()")
-                    Log.v(TAG, "call==$call")
-                    Log.v(TAG, "response==$response")
-                    Log.v(TAG, "response==${response.body().toString()}")
-                }
-            })
+        kakaoRetrofit = APIClient.getClient().create(KakaoRetrofit::class.java)
+        var callDocumentList : Call<DocumentList> = kakaoRetrofit.getData(kakaoAK,keyword)
+        callDocumentList.enqueue(object : Callback<DocumentList> {
+            override fun onFailure(call: Call<DocumentList>, t: Throwable) {
+                Log.v(TAG,"retrofit_onFailure==$t.toString()");
+                Log.v(TAG,"retrofit_onFailure==$call.request().toString()");
+            }
+
+            override fun onResponse(call: Call<DocumentList>, response: Response<DocumentList>) {
+                Log.v(TAG, "retrofit_onResponse==" + response.code())
+                Log.v(TAG, "retrofit_onResponse==" + call.request().toString())
+                Log.v(TAG, "retrofit_response.body().size()==" + response.body()!!.documents.size)
+                Log.v(TAG, "retrofit_response.body()_documents.get(0).getAuthors()==" + response.body()!!.documents[0].authors)
+                documents = response.body()!!.documents
+            }
         })
 
-        thread.start()
-
-
+        /**
+         * TabLayout
+         */
         tabLayout = findViewById(R.id.tabLayout)
         tabLayout.addTab(tabLayout.newTab().setCustomView(createTabView("HOME",R.drawable.ic_launcher_foreground)))
         tabLayout.addTab(tabLayout.newTab().setCustomView(createTabView("Search",R.drawable.ic_launcher_foreground)))
@@ -96,20 +88,31 @@ class MainActivity : AppCompatActivity() {
                 Log.v(TAG,"onTabSelected()")
                 if (p0 != null) {
                     Log.v(TAG,"TapLayout POSITION=="+p0.position)
-                    checkTabLayoutPosition(p0.position)
+//                    checkTabLayoutPosition(p0.position)
                 }
 
             }
         })
+
+//        fragmentManager = supportFragmentManager
+//
+//        fragmentTransaction = fragmentManager.beginTransaction()
+//        var bundle = Bundle()
+//        homeFragment = HomeFragment(adapterVO, bookInfoFragment, documents)
+////            bundle.putSerializable("list", documents)
+////            homeFragment.
+//        fragmentTransaction.replace(R.id.frameLayout, homeFragment).commitAllowingStateLoss()
+
     }
+
     fun checkTabLayoutPosition(tabPosition: Int): Int {
         return when(tabPosition){
             0 -> supportFragmentManager
-                .beginTransaction().replace(R.id.frameLayout, HomeFragment()).commit()
+                .beginTransaction().replace(R.id.frameLayout, HomeFragment(adapterVO, bookInfoFragment,documents)).commit()
             1 -> supportFragmentManager
                 .beginTransaction().replace(R.id.frameLayout, BookInfoFragment()).commit()
             else -> supportFragmentManager
-                .beginTransaction().replace(R.id.frameLayout, HomeFragment()).commit()
+                .beginTransaction().replace(R.id.frameLayout, HomeFragment(adapterVO, bookInfoFragment,documents)).commit()
         }
     }
 

@@ -9,6 +9,6 @@ object SearchRetrofit {
 
     private val retrofit = Retrofit.Builder()
         .baseUrl("https://dapi.kakao.com")
-        .addConverterFactory(GsonConverterFactory.create()) // Gson 사용하기 위해 ConverterFactory에 ㅗ냬ㅜwlwjd
+        .addConverterFactory(GsonConverterFactory.create()) // Gson 사용하기 위해 ConverterFactory에 GSON 지정
         .build()
 }

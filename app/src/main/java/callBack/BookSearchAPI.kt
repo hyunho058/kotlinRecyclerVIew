@@ -44,15 +44,16 @@ class BookSearchAPI constructor(keyword : String) : AsyncTask<String, Void, Arra
             }
             bufferedReader.close()
             Log.v(mTAG, "stringBuffer==$stringBuffer")
-//            var data = stringBuffer.toString()
-//            var jsonData = JSONObject(data)
+            var data = stringBuffer.toString()
+            var jsonData = JSONObject(data)
+            
             var documents = JSONObject(stringBuffer.toString()).getJSONArray("documents")
             documentList = ArrayList<Document>()
-//            for (i in documents.indices){
-//
-//            }
+//           for (i in documents.indices){
+////
+////            }
         }catch (e: Exception){
-
+            Log.v(mTAG,"Exception"+e);
         }
         return documentList;
     }

@@ -1,8 +1,8 @@
 package model
 
+import com.google.gson.annotations.SerializedName
+
 class DocumentList {
-    val documents : List<Document>
-        get() {
-            TODO()
-        }
+    @SerializedName("documents")
+    var documents : ArrayList<Document> = ArrayList()
 }
