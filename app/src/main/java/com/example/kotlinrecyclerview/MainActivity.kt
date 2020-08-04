@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import callBack.APIClient
@@ -63,6 +64,7 @@ class MainActivity : AppCompatActivity() {
                 Log.v(TAG, "retrofit_response.body().size()==" + response.body()!!.documents.size)
                 Log.v(TAG, "retrofit_response.body()_documents.get(0).getAuthors()==" + response.body()!!.documents[0].authors)
                 documents = response.body()!!.documents
+                callFragment()
             }
         })
 
@@ -75,45 +77,38 @@ class MainActivity : AppCompatActivity() {
         tabLayout.addTab(tabLayout.newTab().setCustomView(createTabView("QR",R.drawable.ic_launcher_foreground)))
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
             override fun onTabReselected(p0: TabLayout.Tab?) {
-                Log.v(TAG,"onTabReselected()")
-
+                if (p0 != null) {
+                    Log.v(TAG,"onTabReselected()")
+                }
             }
 
             override fun onTabUnselected(p0: TabLayout.Tab?) {
                 Log.v(TAG,"onTabUnselected()")
 
             }
-
             override fun onTabSelected(p0: TabLayout.Tab?) {
                 Log.v(TAG,"onTabSelected()")
                 if (p0 != null) {
-                    Log.v(TAG,"TapLayout POSITION=="+p0.position)
-//                    checkTabLayoutPosition(p0.position)
+                    Log.v(TAG,"onTabSelected() POSITION=="+p0.position)
+                    when(p0.position){
+                        0 -> callFragment()
+                        1 -> supportFragmentManager
+                            .beginTransaction().replace(R.id.frameLayout, BookInfoFragment()).commit()
+                        else -> supportFragmentManager
+                            .beginTransaction().replace(R.id.frameLayout, HomeFragment(adapterVO,documents)).commit()
+                    }
                 }
-
             }
         })
 
-//        fragmentManager = supportFragmentManager
-//
-//        fragmentTransaction = fragmentManager.beginTransaction()
-//        var bundle = Bundle()
-//        homeFragment = HomeFragment(adapterVO, bookInfoFragment, documents)
-////            bundle.putSerializable("list", documents)
-////            homeFragment.
-//        fragmentTransaction.replace(R.id.frameLayout, homeFragment).commitAllowingStateLoss()
 
     }
 
-    fun checkTabLayoutPosition(tabPosition: Int): Int {
-        return when(tabPosition){
-            0 -> supportFragmentManager
-                .beginTransaction().replace(R.id.frameLayout, HomeFragment(adapterVO, bookInfoFragment,documents)).commit()
-            1 -> supportFragmentManager
-                .beginTransaction().replace(R.id.frameLayout, BookInfoFragment()).commit()
-            else -> supportFragmentManager
-                .beginTransaction().replace(R.id.frameLayout, HomeFragment(adapterVO, bookInfoFragment,documents)).commit()
-        }
+    fun callFragment(){
+        fragmentManager = supportFragmentManager
+        fragmentTransaction = fragmentManager.beginTransaction()
+        homeFragment = HomeFragment(adapterVO, documents)
+        fragmentTransaction.replace(R.id.frameLayout, homeFragment).commitAllowingStateLoss()
     }
 
 
