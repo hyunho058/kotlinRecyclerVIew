@@ -12,10 +12,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <service
-            android:name="callBack.MyService"
-            android:enabled="true"
-            android:exported="true"></service>
-        <service
             android:name="callBack.SearchRetrofitKakao"
             android:exported="false" />
 

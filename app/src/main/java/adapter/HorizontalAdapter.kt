@@ -43,8 +43,9 @@ class HorizontalAdapter(var context: Context, var documentList: ArrayList<Docume
         var getImageUrl:String = documentList.get(position).thumbnail
         Log.v(TAG,"onBindViewHolder()_Url=="+getImageUrl)
         Glide.with(context).load(getImageUrl).into(holder.iv_poster)
-//        var drawable : GradientDrawable = context.getDrawable(R.drawable.frame) as GradientDrawable
-//        holder.iv_poster.setBackgroundResource(drawable)
+        var drawable : GradientDrawable = context.getDrawable(R.drawable.frame) as GradientDrawable
+        holder.iv_poster.background = drawable
+        holder.iv_poster.clipToOutline
     }
 
     override fun getItemCount(): Int{

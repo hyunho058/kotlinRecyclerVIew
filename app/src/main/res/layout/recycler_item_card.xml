@@ -3,7 +3,6 @@
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
-
     <ImageView
         android:id="@+id/iv_poster"
         android:layout_width="120dp"
@@ -11,7 +10,8 @@
         android:layout_marginLeft="5dp"
         android:layout_marginTop="5dp"
         android:layout_marginRight="5dp"
-        android:scaleType="fitXY"/>
+        android:scaleType="fitXY"
+        android:background="@drawable/poster_line"/>
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="match_parent"
