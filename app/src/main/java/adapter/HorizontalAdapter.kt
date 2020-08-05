@@ -15,18 +15,18 @@ import com.example.kotlinrecyclerview.R
 import fragmentView.BookInfoFragment
 import model.Document
 
-class HorizontalAdapter() : RecyclerView.Adapter<HorizontalAdapter.CardItem>(){
+class HorizontalAdapter(var context: Context, var documentList: ArrayList<Document>) : RecyclerView.Adapter<HorizontalAdapter.CardItem>(){
 
     var TAG : String = "HorizontalAdapter"
-    lateinit var documentList : ArrayList<Document>
-    lateinit var context : Context
+//    lateinit var documentList : ArrayList<Document>
+//    lateinit var context : Context
     lateinit var bookInfoFragment : Fragment
 
-    constructor(context: Context, documentList: ArrayList<Document>, bookInfoFragment: Fragment) : this() {
-        this.context = context
-        this.documentList = documentList
-        this.bookInfoFragment = bookInfoFragment
-    }
+//    constructor(context: Context, documentList: ArrayList<Document>, bookInfoFragment: Fragment) : this() {
+//        this.context = context
+//        this.documentList = documentList
+//        this.bookInfoFragment = bookInfoFragment
+//    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardItem {
         Log.v(TAG,"onCreateViewHolder()")

@@ -12,24 +12,26 @@ import com.example.kotlinrecyclerview.R
 import fragmentView.BookInfoFragment
 import model.AdapterVO
 
-class VerticalAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class VerticalAdapter(var context: Context, var adapterList: ArrayList<AdapterVO>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var TAG = "VerticalAdapter"
     lateinit var view : View
-    lateinit var context: Context
-    lateinit var adapterList : ArrayList<AdapterVO>
     lateinit var horizontalAdapter: HorizontalAdapter
-    lateinit var bookInfoFragment: BookInfoFragment
+//    lateinit var bookInfoFragment: BookInfoFragment
 
-    constructor(context: Context, adapterList: ArrayList<AdapterVO>, bookInfoFragment: BookInfoFragment) : this() {
-        this.context=context
-        this.adapterList=adapterList
-        this.bookInfoFragment = bookInfoFragment
-    }
+//    constructor(adapterList: ArrayList<AdapterVO>) : this() {
+//        this.adapterList=adapterList
+//    }
+
+//    constructor(context: Context, adapterList: ArrayList<AdapterVO>, bookInfoFragment: BookInfoFragment) : this() {
+//        this.context=context
+//        this.adapterList=adapterList
+//        this.bookInfoFragment = bookInfoFragment
+//    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         Log.v(TAG,"onCreateViewHolder()_viewType== $viewType")
         var inflater: LayoutInflater
-                =context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                =parent.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         if(viewType == ViewType.ItemBookTitle){
             view=inflater.inflate(R.layout.title_item, parent,false)
             return BookTitleItem(view)
@@ -44,11 +46,10 @@ class VerticalAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         if (holder is BookTitleItem){
             holder.tvBookTitle.setText(adapterList.get(position).bookTitle)
         }else if(holder is HorizontalItem){
-            (holder as HorizontalItem).recyclerHorizontal.layoutManager
-//            (LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false))
-            horizontalAdapter =
-                HorizontalAdapter(context, adapterList.get(position).documentList,bookInfoFragment)
-            holder.recyclerHorizontal.adapter
+            var linearLayoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
+            horizontalAdapter = HorizontalAdapter(context,adapterList.get(position).documentList)
+            holder.recyclerHorizontal.layoutManager = linearLayoutManager
+            holder.recyclerHorizontal.adapter = horizontalAdapter
         }
     }
 

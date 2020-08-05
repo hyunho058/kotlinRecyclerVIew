@@ -1,5 +1,7 @@
 package com.example.kotlinrecyclerview
 
+import adapter.ViewType
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -35,6 +37,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var bookInfoFragment: BookInfoFragment
     lateinit var homeFragment: HomeFragment
 
+    var context:Context = this
     var adapterVO = ArrayList<AdapterVO>()
     var documents = ArrayList<Document>()
 
@@ -42,16 +45,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        asyncTaskData("JAVA")
-
+        val kakaoAK = "KakaoAK a85301089026f3d76b61ac72f59b1d91"
+        kakaoRetrofit = APIClient.getClient().create(KakaoRetrofit::class.java)
         /**
          *  RETROFIT2 를 이요한 REST API 호출
          */
-        val kakaoAK = "KakaoAK a85301089026f3d76b61ac72f59b1d91"
-        val keyword = "JAVA"
-
-        kakaoRetrofit = APIClient.getClient().create(KakaoRetrofit::class.java)
-        var callDocumentList : Call<DocumentList> = kakaoRetrofit.getData(kakaoAK,keyword)
+        var callDocumentList : Call<DocumentList> = kakaoRetrofit.getData(kakaoAK,"JAVA")
         callDocumentList.enqueue(object : Callback<DocumentList> {
             override fun onFailure(call: Call<DocumentList>, t: Throwable) {
                 Log.v(TAG,"retrofit_onFailure==$t.toString()");
@@ -59,11 +58,14 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onResponse(call: Call<DocumentList>, response: Response<DocumentList>) {
-                Log.v(TAG, "retrofit_onResponse==" + response.code())
-                Log.v(TAG, "retrofit_onResponse==" + call.request().toString())
-                Log.v(TAG, "retrofit_response.body().size()==" + response.body()!!.documents.size)
-                Log.v(TAG, "retrofit_response.body()_documents.get(0).getAuthors()==" + response.body()!!.documents[0].authors)
+                Log.v(TAG, "retrofit_onResponse==${response.code()}")
+                Log.v(TAG, "retrofit_onResponse==${call.request().toString()}")
+                Log.v(TAG, "retrofit_response.body().size()==${response.body()!!.documents.size}")
+                Log.v(TAG, "retrofit_response.body()_documents.get(0).getAuthors()==${response.body()!!.documents[0].authors}")
                 documents = response.body()!!.documents
+                addAdapterData("JAVA")
+                addAdapterData("C")
+                addAdapterData("KOTLIN")
                 callFragment()
             }
         })
@@ -72,9 +74,12 @@ class MainActivity : AppCompatActivity() {
          * TabLayout
          */
         tabLayout = findViewById(R.id.tabLayout)
-        tabLayout.addTab(tabLayout.newTab().setCustomView(createTabView("HOME",R.drawable.ic_launcher_foreground)))
-        tabLayout.addTab(tabLayout.newTab().setCustomView(createTabView("Search",R.drawable.ic_launcher_foreground)))
-        tabLayout.addTab(tabLayout.newTab().setCustomView(createTabView("QR",R.drawable.ic_launcher_foreground)))
+        tabLayout.addTab(tabLayout.newTab().setCustomView(createTabView("HOME"
+            ,R.drawable.ic_launcher_foreground)))
+        tabLayout.addTab(tabLayout.newTab().setCustomView(createTabView("Search"
+            ,R.drawable.ic_launcher_foreground)))
+        tabLayout.addTab(tabLayout.newTab().setCustomView(createTabView("QR"
+            ,R.drawable.ic_launcher_foreground)))
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
             override fun onTabReselected(p0: TabLayout.Tab?) {
                 if (p0 != null) {
@@ -95,20 +100,29 @@ class MainActivity : AppCompatActivity() {
                         1 -> supportFragmentManager
                             .beginTransaction().replace(R.id.frameLayout, BookInfoFragment()).commit()
                         else -> supportFragmentManager
-                            .beginTransaction().replace(R.id.frameLayout, HomeFragment(adapterVO,documents)).commit()
+                            .beginTransaction().replace(R.id.frameLayout, HomeFragment(context,adapterVO,documents)).commit()
                     }
                 }
             }
         })
+    }
 
+    fun callRetrofit(){
 
     }
+
 
     fun callFragment(){
         fragmentManager = supportFragmentManager
         fragmentTransaction = fragmentManager.beginTransaction()
-        homeFragment = HomeFragment(adapterVO, documents)
+        homeFragment = HomeFragment(context,adapterVO, documents)
         fragmentTransaction.replace(R.id.frameLayout, homeFragment).commitAllowingStateLoss()
+    }
+
+    fun addAdapterData(keyword: String){
+        Log.v(TAG,"addAdapterData()_keyword==${keyword}")
+        adapterVO.add(AdapterVO(keyword, ViewType.ItemBookTitle))
+        adapterVO.add(AdapterVO(documents, ViewType.ItemHorizontal))
     }
 
 
