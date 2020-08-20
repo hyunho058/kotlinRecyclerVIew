@@ -9,17 +9,19 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.kotlinrecyclerview.R
 import fragmentView.BookInfoFragment
+import fragmentView.SearchFragment
 import model.Document
 
-class HorizontalAdapter(var context: Context, var documentList: ArrayList<Document>) : RecyclerView.Adapter<HorizontalAdapter.CardItem>(){
+class HorizontalAdapter(var context: Context
+                        ,var documentList: ArrayList<Document>)
+    :RecyclerView.Adapter<HorizontalAdapter.CardItem>(){
 
     var TAG : String = "HorizontalAdapter"
-//    lateinit var documentList : ArrayList<Document>
-//    lateinit var context : Context
     lateinit var bookInfoFragment : Fragment
 
 //    constructor(context: Context, documentList: ArrayList<Document>, bookInfoFragment: Fragment) : this() {
@@ -46,6 +48,14 @@ class HorizontalAdapter(var context: Context, var documentList: ArrayList<Docume
         var drawable : GradientDrawable = context.getDrawable(R.drawable.frame) as GradientDrawable
         holder.iv_poster.background = drawable
         holder.iv_poster.clipToOutline
+
+        holder.itemView.setOnClickListener(object : View.OnClickListener{
+            override fun onClick(v: View?) {
+                bookInfoFragment = BookInfoFragment(documentList.get(position))
+
+
+            }
+        })
     }
 
     override fun getItemCount(): Int{
@@ -61,4 +71,10 @@ class HorizontalAdapter(var context: Context, var documentList: ArrayList<Docume
         var iv_poster = itemView. findViewById<ImageView>(R.id.iv_poster)
         var tv_title = itemView.findViewById<TextView>(R.id.tv_title)
     }
+
+//    val mClick: View.OnClickListener = object : View.OnClickListener{
+//        override fun onClick(v: View?) {
+//
+//        }
+//    }
 }

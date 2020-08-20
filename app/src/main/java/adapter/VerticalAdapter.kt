@@ -6,13 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kotlinrecyclerview.R
 import fragmentView.BookInfoFragment
 import model.AdapterVO
 
-class VerticalAdapter(var context: Context, var adapterList: ArrayList<AdapterVO>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class VerticalAdapter(var context: Context
+                      ,var adapterList: ArrayList<AdapterVO>)
+    :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var TAG = "VerticalAdapter"
     lateinit var view : View
     lateinit var horizontalAdapter: HorizontalAdapter

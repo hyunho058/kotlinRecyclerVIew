@@ -14,8 +14,8 @@ interface KakaoRetrofit {
         fun getData(
                 @Header("Authorization") kakaoAK: String,
                 @Query("query") keyword: String
-//                @Query("sort") sort: String = "recency",
-//                @Query("page") page: Int = 1,
-//                @Query("size") size: Int = 10
-        ) : Call<DocumentList>
+//                ,@Query("sort") sort: String = "recency"
+//                ,@Query("page") page: Int = 1
+                ,@Query("size") size: Int = 20
+) : Call<DocumentList>
 }

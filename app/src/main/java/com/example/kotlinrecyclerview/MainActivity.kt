@@ -4,7 +4,9 @@ import adapter.ViewType
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -40,7 +42,7 @@ class MainActivity : AppCompatActivity() {
     var context:Context = this
     var adapterVO = ArrayList<AdapterVO>()
     var documents = ArrayList<Document>()
-    val kakaoAK = "KakaoAK a85301089026f3d76b61ac72f59b1d91"
+    val kakaoAK = "KakaoAK xxxxxxxx"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,31 +86,34 @@ class MainActivity : AppCompatActivity() {
             ,R.drawable.baseline_search_black_18dp)))
         tabLayout.addTab(tabLayout.newTab().setCustomView(createTabView("QR"
             ,R.drawable.baseline_camera_alt_black_18dp)))
-        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
-            override fun onTabReselected(p0: TabLayout.Tab?) {
-                if (p0 != null) {
-                    Log.v(TAG,"onTabReselected()")
+        tabLayout.addOnTabSelectedListener(mTab)
+    }
+
+
+    val mTab : TabLayout.OnTabSelectedListener  = object : TabLayout.OnTabSelectedListener{
+        override fun onTabReselected(p0: TabLayout.Tab?) {
+            if (p0 != null) {
+                Log.v(TAG,"onTabReselected()")
+            }
+        }
+
+        override fun onTabUnselected(p0: TabLayout.Tab?) {
+            Log.v(TAG,"onTabUnselected()")
+
+        }
+        override fun onTabSelected(p0: TabLayout.Tab?) {
+            Log.v(TAG,"onTabSelected()")
+            if (p0 != null) {
+                Log.v(TAG,"onTabSelected() POSITION=="+p0.position)
+                when(p0.position){
+                    0 -> callFragment()
+                    1 -> supportFragmentManager
+//                        .beginTransaction().replace(R.id.frameLayout, SearchFragment()).commit()
+                    else -> supportFragmentManager
+                        .beginTransaction().replace(R.id.frameLayout, HomeFragment(context,adapterVO,documents)).commit()
                 }
             }
-
-            override fun onTabUnselected(p0: TabLayout.Tab?) {
-                Log.v(TAG,"onTabUnselected()")
-
-            }
-            override fun onTabSelected(p0: TabLayout.Tab?) {
-                Log.v(TAG,"onTabSelected()")
-                if (p0 != null) {
-                    Log.v(TAG,"onTabSelected() POSITION=="+p0.position)
-                    when(p0.position){
-                        0 -> callFragment()
-                        1 -> supportFragmentManager
-                            .beginTransaction().replace(R.id.frameLayout, BookInfoFragment()).commit()
-                        else -> supportFragmentManager
-                            .beginTransaction().replace(R.id.frameLayout, HomeFragment(context,adapterVO,documents)).commit()
-                    }
-                }
-            }
-        })
+        }
     }
 
     fun callRetrofit(keyword: String, createFragment: Int){
