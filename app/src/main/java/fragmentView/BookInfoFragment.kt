@@ -20,45 +20,58 @@ class BookInfoFragment(var document: model.Document) : Fragment() {
     lateinit var tvPrice : TextView
     lateinit var  tvISBN : TextView
     lateinit var ivBookImage : ImageView
-
     var getUrl : String=""
-
 //    inflater.inflate(R.layout.bookinfo_fragment, container, false);
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater
+                              ,container: ViewGroup?
+                              ,savedInstanceState: Bundle?): View? {
         Log.v(TAG,"onCreateView");
-
-//        tvTitle = view?.findViewById(R.id.tvTitle)!!
-
-        getUrl = arguments?.getString("Url").toString()
-        Log.v(TAG, "Image_URL == $getUrl")
-//        Glide.with(context).load(getUrl).into(ivBookImage)
-        return inflater.inflate(R.layout.fragment_book_info, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        val view:View = inflater.inflate(R.layout.fragment_book_info
+            ,container, false)
         tvTitle = view.findViewById(R.id.tvTitle)
         tvAuthor = view.findViewById(R.id.tvAuthor)
         tvPrice = view.findViewById(R.id.tvPrice)
         tvISBN = view.findViewById(R.id.tvISBN)
         ivBookImage = view.findViewById(R.id.ivBookImage)
 
-//        tvTitle.text = document.title
-//        tvAuthor.text = document.
+        tvTitle.text = document.title
+        tvAuthor.text = document.authors.toString()
+        tvPrice.text = document.price
+        tvISBN.text = document.isbn
 
-
-        tvTitle.text = arguments?.getString("Title")
-        tvAuthor.text = arguments?.getString("Authors")
-        tvPrice.text = arguments?.getString("Price").toString()
-        tvISBN.text = arguments?.getString("ISBN")
+        getUrl = document.thumbnail
+        Log.v(TAG, "Image_URL == $getUrl")
         Glide.with(context).load(getUrl).into(ivBookImage)
-
-
-//        getUrl = bundle.getString("Url").toString()
+        return view
     }
+
+//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+//        super.onViewCreated(view, savedInstanceState)
+//        tvTitle = view.findViewById(R.id.tvTitle)
+//        tvAuthor = view.findViewById(R.id.tvAuthor)
+//        tvPrice = view.findViewById(R.id.tvPrice)
+//        tvISBN = view.findViewById(R.id.tvISBN)
+//        ivBookImage = view.findViewById(R.id.ivBookImage)
+//
+//        Log.v(TAG,"document == ${document.title}")
+//
+//        tvTitle.text = document.title
+//        tvAuthor.text = document.authors.toString()
+//        tvPrice.text = document.price
+//        tvISBN.text = document.isbn
+//
+//        tvTitle.text = arguments?.getString("Title")
+//        tvAuthor.text = arguments?.getString("Authors")
+//        tvPrice.text = arguments?.getString("Price").toString()
+//        tvISBN.text = arguments?.getString("ISBN")
+//        Glide.with(context).load(getUrl).into(ivBookImage)
+//
+//
+////        getUrl = bundle.getString("Url").toString()
+//    }
 }

@@ -10,8 +10,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.kotlinrecyclerview.MainActivity
 import com.example.kotlinrecyclerview.R
 import fragmentView.BookInfoFragment
 import fragmentView.SearchFragment
@@ -23,6 +25,7 @@ class HorizontalAdapter(var context: Context
 
     var TAG : String = "HorizontalAdapter"
     lateinit var bookInfoFragment : Fragment
+    lateinit var fragmentTransaction: FragmentTransaction
 
 //    constructor(context: Context, documentList: ArrayList<Document>, bookInfoFragment: Fragment) : this() {
 //        this.context = context
@@ -51,9 +54,10 @@ class HorizontalAdapter(var context: Context
 
         holder.itemView.setOnClickListener(object : View.OnClickListener{
             override fun onClick(v: View?) {
+                fragmentTransaction = MainActivity.fragmentManager.beginTransaction()
                 bookInfoFragment = BookInfoFragment(documentList.get(position))
-
-
+                fragmentTransaction.replace(R.id.frameLayout,bookInfoFragment)
+                    .commitAllowingStateLoss()
             }
         })
     }

@@ -28,12 +28,15 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
+    companion object {
+        lateinit var fragmentManager: FragmentManager
+    }
 
     var TAG:String = "MainActivity"
     lateinit var tabLayout:TabLayout
     lateinit var documentList : ArrayList<Document>
     lateinit var kakaoRetrofit : KakaoRetrofit
-    lateinit var fragmentManager: FragmentManager
+//    lateinit var fragmentManager: FragmentManager
     lateinit var fragmentTransaction: FragmentTransaction
     lateinit var serachFragment: SearchFragment
     lateinit var bookInfoFragment: BookInfoFragment
@@ -42,7 +45,7 @@ class MainActivity : AppCompatActivity() {
     var context:Context = this
     var adapterVO = ArrayList<AdapterVO>()
     var documents = ArrayList<Document>()
-    val kakaoAK = "KakaoAK xxxxxxxx"
+    val kakaoAK = "KakaoAK xxxxxxx"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -107,7 +110,8 @@ class MainActivity : AppCompatActivity() {
                 Log.v(TAG,"onTabSelected() POSITION=="+p0.position)
                 when(p0.position){
                     0 -> callFragment()
-                    1 -> supportFragmentManager
+                    1 -> Log.v(TAG,"position== ${p0.position}")
+//                        supportFragmentManager
 //                        .beginTransaction().replace(R.id.frameLayout, SearchFragment()).commit()
                     else -> supportFragmentManager
                         .beginTransaction().replace(R.id.frameLayout, HomeFragment(context,adapterVO,documents)).commit()
@@ -140,8 +144,8 @@ class MainActivity : AppCompatActivity() {
 
 
     fun callFragment(){
-        fragmentManager = supportFragmentManager
-        fragmentTransaction = fragmentManager.beginTransaction()
+        MainActivity.fragmentManager = supportFragmentManager
+        fragmentTransaction = MainActivity.fragmentManager.beginTransaction()
         homeFragment = HomeFragment(context,adapterVO, documents)
         fragmentTransaction.replace(R.id.frameLayout, homeFragment).commitAllowingStateLoss()
     }
@@ -151,7 +155,6 @@ class MainActivity : AppCompatActivity() {
         adapterVO.add(AdapterVO(keyword, ViewType.ItemBookTitle))
         adapterVO.add(AdapterVO(documents, ViewType.ItemHorizontal))
     }
-
 
     fun asyncTaskData(keyword: String){
         Log.v(TAG,"asyncTaskData()_keyword=="+keyword)
